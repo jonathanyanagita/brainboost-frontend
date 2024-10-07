@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated, Modal, Image } from 'react-native';
 
@@ -13,6 +14,8 @@ const FlashcardScreen = () => {
     inputRange: [0, 180],
     outputRange: ['180deg', '360deg'],
   });
+
+  const navigation = useNavigation();
 
   const flipCard = () => {
     if (isFlipped) {
@@ -32,6 +35,11 @@ const FlashcardScreen = () => {
     }
     setIsFlipped(!isFlipped);
   };
+
+  const handleDifficultySelection = (difficulty: string) => {
+    // Implement your difficulty selection functionality here
+    console.log(`Difficulty selected: ${difficulty}`);
+  }
 
 
   const frontAnimatedStyle = {
@@ -58,19 +66,19 @@ const FlashcardScreen = () => {
     <View style={styles.container}>
       {/* Dropdown Menu */}
       <View style={styles.dropdownContainer}>
-        <TouchableOpacity onPress={() => setIsDropdownVisible(!isDropdownVisible)}>
-          {/* New Icon */}
+        <TouchableOpacity onPress={() => navigation.navigate('CreateFlashcard')}>
           <Image 
-            source={require('../../assets/adicionar.png')} // Replace with your new icon path
+            source={require('../../assets/adicionar.png')} // New icon
             style={styles.dropdownIcon}
           />
-          {/* Existing Icon */}
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setIsDropdownVisible(!isDropdownVisible)}>
           <Image 
             source={require('../../assets/maisOpcoes.png')} 
             style={styles.dropdownIcon} 
           />
         </TouchableOpacity>
-
+        
         {/* Dropdown Modal */}
         <Modal
           transparent={true}
@@ -188,11 +196,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 
-
   dropdownContainer: {
     flexDirection: 'row', // Align icons in a row
     top: 50,
-    right: 20,
+    right: 0,
   },
   dropdownButton: {
     padding: 10,
